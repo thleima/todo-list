@@ -20,16 +20,22 @@ function addTask() {
 function displayTasks() {
   taskList.innerHTML = "";
   tasks.forEach((task, index) => {
-    const li = document.createElement("li");
-    li.innerHTML = `<input type="checkbox" id="task-${index}" ${
-      task.done ? "checked" : ""
-    }>
-          <label for="task-${index}">${task.text}</label>`;
-    li.querySelector("input").addEventListener("change", () =>
-      toggleTask(index)
-    );
-    taskList.appendChild(li);
+    taskList.appendChild(createTaskComponent(task, index));
   });
+}
+
+function createTaskComponent(task, index) {
+  const taskComponent = document.createElement("div");
+  taskComponent.classList.add("task-component");
+  taskComponent.innerHTML = `<input type="checkbox" id="task-${index}" ${
+    task.done ? "checked" : ""
+  }>
+        <label for="task-${index}">${task.text}</label>
+        `;
+  taskComponent
+    .querySelector("input")
+    .addEventListener("change", () => toggleTask(index));
+  return taskComponent;
 }
 
 function toggleTask(index) {

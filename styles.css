@@ -1,0 +1,7 @@
+.task-component {
+  display: flex;
+  align-items: center;
+  margin: 10px 0;
+  background-color: aliceblue;
+  height: 40px;
+}
