@@ -11,7 +11,7 @@ let tasks = [];
 function addTask() {
   const taskText = taskInput.value.trim();
   if (taskText !== "") {
-    tasks.push({ text: taskText });
+    tasks.push({ text: taskText, done: false });
     taskInput.value = "";
     displayTasks();
   }
@@ -22,7 +22,7 @@ function displayTasks() {
   tasks.forEach((task, index) => {
     const li = document.createElement("li");
     li.innerHTML = `<input type="checkbox" id="task-${index}" ${
-      task.completed ? "checked" : ""
+      task.done ? "checked" : ""
     }>
           <label for="task-${index}">${task.text}</label>`;
     li.querySelector("input").addEventListener("change", () =>
@@ -33,11 +33,12 @@ function displayTasks() {
 }
 
 function toggleTask(index) {
-  tasks[index].completed = !tasks[index].completed;
-  displayTasks();
+  tasks[index].done = !tasks[index].done;
+  console.log(tasks[index]);
+  // displayTasks();
 }
 
 function clearCompletedTasks() {
-  tasks = tasks.filter((task) => !task.completed);
+  tasks = tasks.filter((task) => !task.done);
   displayTasks();
 }
