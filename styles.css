@@ -1,3 +1,31 @@
+.container {
+  margin: 20px;
+  padding: 10px;
+  border-radius: 20px;
+  background-color: beige;
+}
+
+.input-container {
+  margin: 20px;
+  height: 60px;
+  width: 520px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+h1 {
+  font-family: Verdana;
+  font-weight: 300;
+}
+
+#taskInput {
+  height: 20px;
+  width: 300px;
+  padding: 8px;
+  border: none;
+}
+
 .task-component {
   display: flex;
   align-items: center;
