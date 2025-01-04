@@ -10,7 +10,9 @@ let tasks = [];
 
 function addTask() {
   const taskText = taskInput.value.trim();
-  if (taskText !== "") {
+  if (taskText === "") {
+    alert("Empty field");
+  } else {
     tasks.push({ text: taskText, done: false });
     taskInput.value = "";
     displayTasks();
@@ -30,11 +32,14 @@ function createTaskComponent(task, index) {
   taskComponent.innerHTML = `<input type="checkbox" id="task-${index}" ${
     task.done ? "checked" : ""
   }>
-        <label for="task-${index}">${task.text}</label>
+        <label id="text-task-${index}" for="task-${index}">${task.text}</label>
         `;
   taskComponent
     .querySelector("input")
     .addEventListener("change", () => toggleTask(index));
+  taskComponent
+    .querySelector("label")
+    .addEventListener("click", () => editTask(index));
   return taskComponent;
 }
 
@@ -42,6 +47,23 @@ function toggleTask(index) {
   tasks[index].done = !tasks[index].done;
   console.log(tasks[index]);
   // displayTasks();
+}
+
+function addInputForEdit(index) {
+  // get the element
+  const thisTask = document.getElementById(`text-task-${index}`);
+  // add input to parent node to edit the task
+  thisTask.parentNode.innerHTML += `<input type="text" id="edit-task-${index}" placeholder="Edit task"> <button id="btn-edit-${index}">Edit Task</button>`;
+}
+
+function editTask(index) {
+  addInputForEdit(index);
+  const editInput = document.getElementById(`edit-task-${index}`);
+  const editBtn = document.getElementById(`btn-edit-${index}`);
+  editBtn.addEventListener("click", () => {
+    tasks[index].text = editInput.value;
+    displayTasks();
+  });
 }
 
 function clearCompletedTasks() {
