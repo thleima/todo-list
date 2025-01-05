@@ -27,20 +27,21 @@ h1 {
 }
 
 .task-component {
+  margin: 10px;
+  padding: 10px;
   display: flex;
-  align-items: center;
-  margin: 10px 0;
-  background-color: aliceblue;
+  width: 500px;
+  justify-content: space-between;
 }
 
-.task-component p {
-  margin-left: 10px;
+.content input {
+  width: 340px;
+  border: none;
+  padding: 6px;
+  outline: none;
+  cursor:inherit;
+}
+
+button {
   cursor: pointer;
-}
-
-.task-component p:hover::after {
-  content: 'edit';
-  font-size: 14px;
-  margin-left: 3px;
-  background-color: lightgreen;
 }
