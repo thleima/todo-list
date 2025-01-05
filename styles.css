@@ -19,6 +19,10 @@ h1 {
   font-weight: 300;
 }
 
+button {
+  cursor: pointer;
+}
+
 #taskInput {
   height: 20px;
   width: 300px;
@@ -42,10 +46,10 @@ h1 {
   cursor:inherit;
 }
 
-button {
-  cursor: pointer;
-}
-
 .done {
   color: green;
+}
+
+.actions button {
+  margin-left: 4px;
 }

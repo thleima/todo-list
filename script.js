@@ -6,6 +6,12 @@ const clear_completed_btn = document.querySelector("#clearCompletedBtn");
 let tasks_array = [];
 
 add_task_btn.addEventListener("click", add_task_array);
+clear_completed_btn.addEventListener("click", clear_completed_tasks);
+
+function clear_completed_tasks() {
+  tasks_array = tasks_array.filter((task) => !task.complete);
+  display_tasks();
+}
 
 function add_task_array() {
   const text = input.value.trim();
@@ -41,6 +47,9 @@ function create_task_component(task, id) {
   task_input.type = "text";
   task_input.value = task.text;
   task_input.setAttribute("readonly", "readonly");
+  if (tasks_array[id].complete) {
+    task_input.classList.add("done");
+  }
 
   task_content.appendChild(task_input);
 
@@ -52,7 +61,7 @@ function create_task_component(task, id) {
   task_edit_btn.innerText = "Edit";
 
   const task_complete_btn = document.createElement("button");
-  task_complete_btn.classList.add("delete");
+  task_complete_btn.classList.add("complete");
   task_complete_btn.innerText = "Complete";
 
   task_actions.appendChild(task_edit_btn);
@@ -76,6 +85,7 @@ function create_task_component(task, id) {
   });
 
   task_complete_btn.addEventListener("click", (e) => {
-    //tasks.list.removeChild(task_element);
+    tasks_array[id].complete = !tasks_array[id].complete;
+    display_tasks();
   });
 }
