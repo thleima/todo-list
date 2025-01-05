@@ -26,7 +26,6 @@ function add_task_array() {
 
 function display_tasks() {
   tasks_list.innerHTML = "";
-  console.log("array :", tasks_array);
   tasks_array.forEach((element, id) => {
     create_task_component(element, id);
   });
@@ -71,18 +70,20 @@ function create_task_component(task, id) {
   if (tasks_array[id].complete) {
     task_input.classList.add("done");
     task_complete_btn.innerText = "Uncomplete";
-    task_actions.removeChild(task_edit_btn);
+    task_edit_btn.style.visibility = "hidden";
   }
 
   task_edit_btn.addEventListener("click", (e) => {
     if (task_edit_btn.innerText.toLowerCase() === "edit") {
       task_edit_btn.innerText = "Save";
       task_input.removeAttribute("readonly");
+      task_complete_btn.style.visibility = "hidden";
       task_input.focus();
     } else {
       task_edit_btn.innerText = "Edit";
       task_input.setAttribute("readonly", "readonly");
       tasks_array[id].text = task_input.value;
+      task_complete_btn.style.visibility = "visible";
     }
   });
 
@@ -91,12 +92,12 @@ function create_task_component(task, id) {
       task_input.classList.add("done");
       task_complete_btn.innerText = "Uncomplete";
       tasks_array[id].complete = true;
-      task_actions.removeChild(task_edit_btn);
+      task_edit_btn.style.visibility = "hidden";
     } else {
       task_input.classList.remove("done");
       task_complete_btn.innerText = "Complete";
       tasks_array[id].complete = false;
-      task_actions.appendChild(task_edit_btn);
+      task_edit_btn.style.visibility = "visible";
     }
   });
 }
