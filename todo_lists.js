@@ -15,7 +15,7 @@ function checkEmptyField(input) {
 function addTaskInArray() {
   const taskText = taskInput.value.trim();
   if (checkEmptyField(taskText)) {
-    tasks.push({ text: taskText, done: false, editing: false });
+    tasks.push({ text: taskText, done: false });
     taskInput.value = "";
     displayTasks();
   } else {
@@ -34,13 +34,18 @@ function taskComponent(task, index) {
   const taskComponent = document.createElement("div");
   taskComponent.classList.add("task-component");
   taskComponent.innerHTML = createTaskComponentHtml(task, index);
+
   taskComponent.addEventListener("click", (e) => {
-    switch (e.target.nodeName) {
-      case "P":
-        toggleTaskStatut(index, "editing");
+    switch (e.target.className.toLowerCase()) {
+      case "edit":
+        console.log("edit");
         break;
-      case "INPUT":
-        toggleTaskStatut(index, "done");
+      case "complete":
+        const actions = document.querySelector(".actions");
+        const taskText = document.querySelector(`#task-${index}`);
+        taskComponent.removeChild(actions);
+        taskText.classList.add("done");
+        toggleTaskStatut(index);
         break;
       default:
     }
@@ -48,30 +53,25 @@ function taskComponent(task, index) {
   return taskComponent;
 }
 
-function toggleTaskStatut(index, statut) {
-  tasks[index][statut] = !tasks[index][statut];
-  console.log(tasks[index]);
-  return tasks[index][statut];
+function toggleTaskStatut(index) {
+  tasks[index].done = !tasks[index].done;
 }
 
-function editTask(index) {
-  if (toggleTaskStatut(index, "editing")) {
-    addInputForEdit(index);
-    const editInput = document.getElementById(`edit-task-${index}`);
-    const editBtn = document.getElementById(`btn-edit-${index}`);
-    editBtn.addEventListener("click", () => {
-      tasks[index].text = editInput.value;
-      displayTasks();
-    });
-  } else {
-    console.log("hello");
-  }
-}
+function editTask(index) {}
 
-function addInputForEdit(index) {
-  const thisTask = document.getElementById(`text-task-${index}`);
-  thisTask.parentNode.innerHTML += `<input type="text" id="edit-task-${index}" placeholder="Edit task"> <button id="btn-edit-${index}">Edit Task</button>`;
-}
+// function editTask(index) {
+//   if (toggleTaskStatut(index, "editing")) {
+//     addInputForEdit(index);
+//     const editInput = document.getElementById(`edit-task-${index}`);
+//     const editBtn = document.getElementById(`btn-edit-${index}`);
+//     editBtn.addEventListener("click", () => {
+//       tasks[index].text = editInput.value;
+//       displayTasks();
+//     });
+//   } else {
+//     console.log("hello");
+//   }
+// }
 
 function clearCompletedTasks() {
   tasks = tasks.filter((task) => !task.done);
@@ -79,10 +79,19 @@ function clearCompletedTasks() {
 }
 
 function createTaskComponentHtml(task, index) {
-  const taskComponentHtml = `<input type="checkbox" id="task-${index}" ${
-    task.done ? "checked" : ""
-  }>
-        <p id="text-task-${index}">${task.text}</p>
-        `;
+  const taskComponentHtml = `
+                <div class="content">
+                 <input 
+                    id="task-${index}"
+                    type="text" 
+                    class="text" 
+                    value="${task.text}"
+                    readonly>
+                </div>
+                <div class="actions">
+                    <button class="edit">Edit</button>
+                    <button class="complete">Complete</button>
+                </div>
+            `;
   return taskComponentHtml;
 }
