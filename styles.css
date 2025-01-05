@@ -32,3 +32,15 @@ h1 {
   margin: 10px 0;
   background-color: aliceblue;
 }
+
+.task-component p {
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.task-component p:hover::after {
+  content: 'edit';
+  font-size: 14px;
+  margin-left: 3px;
+  background-color: lightgreen;
+}
