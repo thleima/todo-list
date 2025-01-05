@@ -47,29 +47,32 @@ function create_task_component(task, id) {
   task_input.type = "text";
   task_input.value = task.text;
   task_input.setAttribute("readonly", "readonly");
-  if (tasks_array[id].complete) {
-    task_input.classList.add("done");
-  }
 
   task_content.appendChild(task_input);
 
   const task_actions = document.createElement("div");
   task_actions.classList.add("actions");
 
-  const task_edit_btn = document.createElement("button");
-  task_edit_btn.classList.add("edit");
-  task_edit_btn.innerText = "Edit";
-
   const task_complete_btn = document.createElement("button");
   task_complete_btn.classList.add("complete");
   task_complete_btn.innerText = "Complete";
 
-  task_actions.appendChild(task_edit_btn);
+  const task_edit_btn = document.createElement("button");
+  task_edit_btn.classList.add("edit");
+  task_edit_btn.innerText = "Edit";
+
   task_actions.appendChild(task_complete_btn);
+  task_actions.appendChild(task_edit_btn);
 
   task_element.appendChild(task_actions);
 
   tasks_list.appendChild(task_element);
+
+  if (tasks_array[id].complete) {
+    task_input.classList.add("done");
+    task_complete_btn.innerText = "Uncomplete";
+    task_actions.removeChild(task_edit_btn);
+  }
 
   task_edit_btn.addEventListener("click", (e) => {
     if (task_edit_btn.innerText.toLowerCase() === "edit") {
@@ -80,12 +83,20 @@ function create_task_component(task, id) {
       task_edit_btn.innerText = "Edit";
       task_input.setAttribute("readonly", "readonly");
       tasks_array[id].text = task_input.value;
-      display_tasks();
     }
   });
 
   task_complete_btn.addEventListener("click", (e) => {
-    tasks_array[id].complete = !tasks_array[id].complete;
-    display_tasks();
+    if (task_complete_btn.innerText.toLowerCase() === "complete") {
+      task_input.classList.add("done");
+      task_complete_btn.innerText = "Uncomplete";
+      tasks_array[id].complete = true;
+      task_actions.removeChild(task_edit_btn);
+    } else {
+      task_input.classList.remove("done");
+      task_complete_btn.innerText = "Complete";
+      tasks_array[id].complete = false;
+      task_actions.appendChild(task_edit_btn);
+    }
   });
 }
