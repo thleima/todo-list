@@ -3,13 +3,17 @@ const tasks_list = document.querySelector("#taskList");
 const add_task_btn = document.querySelector("#addTaskBtn");
 const clear_completed_btn = document.querySelector("#clearCompletedBtn");
 
-let tasks_array = [];
+// get Tasks from the Local Storage
+let tasks_array = JSON.parse(localStorage.tasks);
+
+display_tasks();
 
 add_task_btn.addEventListener("click", add_task_array);
 clear_completed_btn.addEventListener("click", clear_completed_tasks);
 
 function clear_completed_tasks() {
   tasks_array = tasks_array.filter((task) => !task.complete);
+  saveData("tasks", tasks_array);
   display_tasks();
 }
 
@@ -17,6 +21,7 @@ function add_task_array() {
   const text = input.value.trim();
   if (text !== "") {
     tasks_array.push({ text: text, complete: false });
+    saveData("tasks", tasks_array);
     display_tasks();
   } else {
     alert("Empty Field");
@@ -32,6 +37,7 @@ function display_tasks() {
 }
 
 function create_task_component(task, id) {
+  // Create all HTML element
   const task_element = document.createElement("div");
   task_element.classList.add("task-component");
   task_element.setAttribute("id", `task-${id}`);
@@ -67,6 +73,7 @@ function create_task_component(task, id) {
 
   tasks_list.appendChild(task_element);
 
+  // Functionnalities start here-bellow
   if (tasks_array[id].complete) {
     task_input.classList.add("done");
     task_complete_btn.innerText = "Uncomplete";
@@ -83,6 +90,7 @@ function create_task_component(task, id) {
       task_edit_btn.innerText = "Edit";
       task_input.setAttribute("readonly", "readonly");
       tasks_array[id].text = task_input.value;
+      saveData("tasks", tasks_array);
       task_complete_btn.style.visibility = "visible";
     }
   });
@@ -92,6 +100,7 @@ function create_task_component(task, id) {
       task_input.classList.add("done");
       task_complete_btn.innerText = "Uncomplete";
       tasks_array[id].complete = true;
+      saveData("tasks", tasks_array);
       task_edit_btn.style.visibility = "hidden";
     } else {
       task_input.classList.remove("done");
@@ -100,4 +109,9 @@ function create_task_component(task, id) {
       task_edit_btn.style.visibility = "visible";
     }
   });
+}
+
+// Helper function to save data to Local Storage
+function saveData(name, item) {
+  localStorage.setItem(name, JSON.stringify(item));
 }
