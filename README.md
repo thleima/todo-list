@@ -8,4 +8,4 @@ JavaScript only - Vanilla
 - Add a task
 - Edit a task that has been already created
 - Save previous Editing
-- Delete
+- Complete the task (delete)
